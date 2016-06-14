@@ -1,0 +1,5 @@
+---
+# vars file for dbserver
+mysql_db: pydio
+mysql_user: pydio_user
+mysql_password: pipi123

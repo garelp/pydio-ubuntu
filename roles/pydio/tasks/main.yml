@@ -1,0 +1,43 @@
+---
+# tasks file for pydio
+- name: Install required software
+  apt: name={{ item }} state=present
+  sudo: yes
+  with_items:
+    - unoconv
+    - imagemagick
+
+- name: check is /var/www/pydio/index.php exists
+  stat: path=/var/www/pydio/index.php
+  register: webdir
+
+- name: copy Pydio Archive
+  copy: src={{pydio_version}}.tar.gz dest=/tmp/{{pydio_version}}.tar.gz
+  when: webdir.stat.isreg is not defined
+
+- name: uncompress the Archive
+  unarchive: src=/tmp/{{pydio_version}}.tar.gz dest=/tmp copy=no
+  when: webdir.stat.isreg is not defined
+
+- name: copy the content of pydio folder
+  command: rsync -r /tmp/{{pydio_version}}/ /var/www/{{pydio_webdir}}/
+  when: webdir.stat.isreg is not defined
+
+- name: changing ownership of Pydio folder
+  command: chown -R www-data:www-data /var/www/{{pydio_webdir}}
+  when: webdir.stat.isreg is not defined
+
+- name: copy the Pydio Apache config file
+  template: src=pydio.conf.j2 dest=/etc/apache2/sites-available/pydio.conf
+
+- name: activate the Pydio Apache config
+  command: a2ensite pydio
+
+- name: copy php config file for Pydio
+  copy: src=pydio.ini dest=/etc/php5/mods-available
+
+- name: activate the php config for Pydio
+  command: php5enmod pydio
+
+- name: Restart Apache to activate the Pydio config
+  service: name=apache2 state=restarted

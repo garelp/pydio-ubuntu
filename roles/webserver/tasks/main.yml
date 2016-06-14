@@ -1,0 +1,25 @@
+---
+# tasks file for webserver
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+  sudo: yes
+
+- name: Install required software
+  apt: name={{ item }} state=present
+  sudo: yes
+  with_items:
+    - apache2
+    - mysql-client
+    - php5-mysql
+    - php5
+    - libapache2-mod-php5
+    - php5-mcrypt
+    - python-mysqldb
+    - php5-gd
+    - libssh2-php
+
+
+- name: enabling php5-mcrypt in apache2
+  command: php5enmod mcrypt
+  notify:
+    - restart apache

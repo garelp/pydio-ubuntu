@@ -1,0 +1,4 @@
+---
+# vars file for pydio
+pydio_version: pydio-core-6.4.0
+pydio_webdir: pydio

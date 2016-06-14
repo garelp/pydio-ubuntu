@@ -1,0 +1,15 @@
+Alias /pydio /var/www/pydio
+Alias /pydio_public /var/www/pydio/public
+
+<Directory "/var/www/pydio">
+        Options FollowSymLinks
+        AllowOverride Limit FileInfo
+        Require all granted
+        php_value error_reporting 2
+</Directory>
+
+<Directory "/var/www/pydio/public">
+        AllowOverride Limit FileInfo
+        Require all granted
+        php_value error_reporting 2
+</Directory>
