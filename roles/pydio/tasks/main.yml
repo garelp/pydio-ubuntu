@@ -37,7 +37,7 @@
   when: webdir.stat.isreg is not defined
 
 - name: changing ownership of Pydio folder
-  file: dest=/var/www/{{pydio_webdir}}/ state=directory owner=www-data group=www-data recurse=yes
+  file: dest=/srv/web/{{pydio_webdir}}/ state=directory owner=www-data group=www-data recurse=yes
   when: webdir.stat.isreg is not defined
 
 - name: copy the Pydio Apache config file
