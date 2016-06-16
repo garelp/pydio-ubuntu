@@ -1,0 +1,76 @@
+- name: Create Pydio infra
+  hosts: localhost
+  tasks:
+  - name: create 15g web volume
+    os_volume:
+      cloud: HH2_ECL
+      state: present
+      size: 15
+      display_name: vol-pydio-web
+
+#  - name: create 15g DB volume
+#    os_volume:
+#      cloud: HH2_ECL
+#      state: present
+#      size: 15
+#      display_name: vol-pydio-db
+
+  - name: create port with a fixed ip for web server
+    os_port:
+      cloud: HH2_ECL
+      state: present
+      name: port-web-pydio
+      network: fr-internal-net
+      fixed_ips:
+        - ip_address: 10.20.0.18
+
+  - name: create port with a fixed ip for DB server
+    os_port:
+      cloud: HH2_ECL
+      state: present
+      name: port-db-pydio
+      network: fr-internal-net
+      fixed_ips:
+        - ip_address: 10.20.0.11
+
+  - name: launch an Web server
+    ignore_errors: true
+    os_server:
+       cloud: HH2_ECL
+       state: present
+       name: pydio-web
+       image: trusty-server-cloudimg-amd64
+       key_name: key_pedro
+       timeout: 200
+       flavor: 1CPU-4GB
+       nics:
+           - port-name: port-web-pydio
+
+  - name: launch a DB server
+    ignore_errors: true
+    os_server:
+       cloud: HH2_ECL
+       state: present
+       name: pydio-db
+       image: trusty-server-cloudimg-amd64
+       key_name: key_pedro
+       timeout: 200
+       flavor: 1CPU-4GB
+       nics:
+           - port-name: port-db-pydio
+
+  - name: attach volume to owncloud-web
+    os_server_volume:
+      cloud: HH2_ECL
+      state: present
+      server: pydio-web
+      volume: vol-pydio-web
+      device: /dev/vdb
+
+#  - name: attach volume to owncloud-db
+#    os_server_volume:
+#      cloud: HH2_ECL
+#      state: present
+#      server: pydio-db
+#      volume: vol-pydio-db
+#      device: /dev/vdb

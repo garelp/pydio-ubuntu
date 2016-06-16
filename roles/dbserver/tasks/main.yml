@@ -11,6 +11,15 @@
     - mysql-server
     - python-mysqldb
 
+- name: ensure mysql is configured to bind to the specified address and port
+  ini_file:
+    dest: /etc/mysql/my.cnf
+    section: mysqld
+    option: "bind-address"
+    value: "0.0.0.0"
+  notify:
+    - restart mysql server
+
 - name: Create mysql database
   mysql_db: name={{ mysql_db }} state=present
 
@@ -19,5 +28,5 @@
     name={{ mysql_user }}
     password={{ mysql_password }}
     priv=*.*:ALL
-    host='%' 
+    host='%'
     state=present

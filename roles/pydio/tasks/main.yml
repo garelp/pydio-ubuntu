@@ -7,8 +7,21 @@
     - unoconv
     - imagemagick
 
+- name: check is /srv/web exists
+  stat: path=/srv/web/{{pydio_webdir}}
+  register: webdir
+
+- name: create directory for Pydio
+  shell: 'mkdir -p /srv/web/{{pydio_webdir}}'
+  args:
+      creates: /srv/web/{{pydio_webdir}}
+  when: webdir.stat.isdir is not defined
+
+- name: Make symlink from addtional volume for pydio
+  file: src=/srv/web/{{pydio_webdir}} dest=/var/www/{{pydio_webdir}} state=link
+
 - name: check is /var/www/pydio/index.php exists
-  stat: path=/var/www/pydio/index.php
+  stat: path=/var/www/{{pydio_webdir}}/index.php
   register: webdir
 
 - name: copy Pydio Archive
@@ -24,7 +37,7 @@
   when: webdir.stat.isreg is not defined
 
 - name: changing ownership of Pydio folder
-  command: chown -R www-data:www-data /var/www/{{pydio_webdir}}
+  command: chown -R www-data:www-data /var/www/{{pydio_webdir}}/*
   when: webdir.stat.isreg is not defined
 
 - name: copy the Pydio Apache config file
