@@ -1,0 +1,36 @@
+- name: Destroy Pydio infra
+  hosts: localhost
+  tasks:
+
+  - name: Destroy Web server
+    ignore_errors: true
+    os_server:
+       cloud: HH2_ECL
+       state: absent
+       name: pydio-web
+       image: trusty-server-cloudimg-amd64
+       key_name: key_pedro
+       timeout: 200
+       flavor: 1CPU-4GB
+       nics:
+           - port-name: port-web-pydio
+
+  - name: Destroy DB server
+    ignore_errors: true
+    os_server:
+       cloud: HH2_ECL
+       state: absent
+       name: pydio-db
+       image: trusty-server-cloudimg-amd64
+       key_name: key_pedro
+       timeout: 200
+       flavor: 1CPU-4GB
+       nics:
+           - port-name: port-db-pydio
+
+  - name: delete 15g web volume
+    os_volume:
+      cloud: HH2_ECL
+      state: absent
+      size: 15
+      display_name: vol-pydio-web
