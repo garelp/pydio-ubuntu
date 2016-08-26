@@ -27,12 +27,16 @@
   args:
       creates: /root/create.vdb
   when: webdir.stat.isdir is not defined
+  tags:
+    - add_volume
 
 - name: mount /dev/vdb on /srv
   shell: 'echo "/dev/vdb1 /srv ext3 rw 0 0" >> /etc/fstab; mount -a'
   args:
       creates: /root/mount.vdb
   when: webdir.stat.isdir is not defined
+  tags:
+    - add_volume
 
 - name: create directories on /srv for web
   shell: 'mkdir -p /srv/web/'

@@ -8,13 +8,6 @@
       size: 15
       display_name: vol-pydio-web
 
-#  - name: create 15g DB volume
-#    os_volume:
-#      cloud: HH2_ECL
-#      state: present
-#      size: 15
-#      display_name: vol-pydio-db
-
   - name: create port with a fixed ip for web server
     os_port:
       cloud: HH2_ECL
@@ -66,11 +59,3 @@
       server: pydio-web
       volume: vol-pydio-web
       device: /dev/vdb
-
-#  - name: attach volume to owncloud-db
-#    os_server_volume:
-#      cloud: HH2_ECL
-#      state: present
-#      server: pydio-db
-#      volume: vol-pydio-db
-#      device: /dev/vdb
