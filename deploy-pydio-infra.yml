@@ -3,33 +3,33 @@
   tasks:
   - name: create 15g web volume
     os_volume:
-      cloud: HH2_ECL
+      cloud: HH2_NTTE
       state: present
       size: 15
       display_name: vol-pydio-web
 
   - name: create port with a fixed ip for web server
     os_port:
-      cloud: HH2_ECL
+      cloud: HH2_NTTE
       state: present
       name: port-web-pydio
-      network: fr-internal-net
+      network: fr-net-1
       fixed_ips:
         - ip_address: 10.20.0.18
 
   - name: create port with a fixed ip for DB server
     os_port:
-      cloud: HH2_ECL
+      cloud: HH2_NTTE
       state: present
       name: port-db-pydio
-      network: fr-internal-net
+      network: fr-net-1
       fixed_ips:
         - ip_address: 10.20.0.11
 
   - name: launch a Web server
     ignore_errors: true
     os_server:
-       cloud: HH2_ECL
+       cloud: HH2_NTTE
        state: present
        name: pydio-web
        image: trusty-server-cloudimg-amd64
@@ -42,7 +42,7 @@
   - name: launch a DB server
     ignore_errors: true
     os_server:
-       cloud: HH2_ECL
+       cloud: HH2_NTTE
        state: present
        name: pydio-db
        image: trusty-server-cloudimg-amd64
@@ -54,7 +54,7 @@
 
   - name: attach volume to pydio-web
     os_server_volume:
-      cloud: HH2_ECL
+      cloud: HH2_NTTE
       state: present
       server: pydio-web
       volume: vol-pydio-web

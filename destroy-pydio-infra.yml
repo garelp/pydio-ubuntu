@@ -5,7 +5,7 @@
   - name: Destroy Web server
     ignore_errors: true
     os_server:
-       cloud: HH2_ECL
+       cloud: HH2_NTTE
        state: absent
        name: pydio-web
        image: trusty-server-cloudimg-amd64
@@ -18,7 +18,7 @@
   - name: Destroy DB server
     ignore_errors: true
     os_server:
-       cloud: HH2_ECL
+       cloud: HH2_NTTE
        state: absent
        name: pydio-db
        image: trusty-server-cloudimg-amd64
@@ -30,7 +30,7 @@
 
   - name: delete 15g web volume
     os_volume:
-      cloud: HH2_ECL
+      cloud: HH2_NTTE
       state: absent
       size: 15
       display_name: vol-pydio-web
