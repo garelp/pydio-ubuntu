@@ -34,6 +34,7 @@
        name: pydio-web
        image: trusty-server-cloudimg-amd64
        key_name: key_pedro
+       availability_zone: zone1-groupb
        timeout: 200
        flavor: 1CPU-4GB
        nics:
@@ -58,4 +59,5 @@
       state: present
       server: pydio-web
       volume: vol-pydio-web
+      availability_zone: zone1-groupb
       device: /dev/vdb
